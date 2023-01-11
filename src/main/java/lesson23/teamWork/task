@@ -12,8 +12,8 @@
   + findAllProductsByGivenManufacturer,
 
  + deleteProduct,
- - deleteManufacturer (note: istrinant gamintoja reiktu istrinti ir jam priklausancius produktus).
- - update
+ + deleteManufacturer (note: istrinant gamintoja reiktu istrinti ir jam priklausancius produktus).
+ + update
 
 
  TIP: Funkcionalumas turetu buti isskaidytas

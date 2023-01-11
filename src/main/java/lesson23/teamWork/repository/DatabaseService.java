@@ -18,10 +18,13 @@ public class DatabaseService {
     private static final String SELECT_FROM_PRODUCTS = "SELECT * FROM products";
     private static final String SELECT_BY_NAME = "SELECT * FROM products WHERE name = '%s' ";
     private static final String SELECT_BY_GIVEN_MANUFACTURER = "SELECT * FROM products WHERE manufacturer = '%s';";
-    public static final String DEACTIVATE_FOREIGN_KEY = "SET FOREIGN_KEY_CHECKS=0;";
     public static final String DELETE_PRODUCTS_WHERE_ID = "DELETE FROM products WHERE manufacturer = '%d' ";
-    public static final String ACTIVATE_FOREIGN_KEY = "SET FOREIGN_KEY_CHECKS=1;";
     public static final String DELETE_FROM_MANUFACTURERS_WHERE_ID = "DELETE FROM products WHERE name = '%s' ";
+    public static final String DELETE_MANUFACTURE_WITH_PRODUCTS_WHERE_MANUFACTURE = "DELETE manufacturers, products from manufacturers" +
+            " right  join products on products.manufacturer = manufacturers.name " +
+            " where products.manufacturer = '%s'";
+    public static final String UPDATE_PRODUCTS_WHERE_ID_D = "UPDATE products SET name = '%s', country = '%s', price= %d, manufacturer = '%s' where id= %d";
+    public static final String UPDATE_MANUFACTURER_ID = "UPDATE manufacturers SET name ='%s', countryManufacturer = '%s', numberOfEmployees = %d where id=%d;";
 
 
     private static List<Product> constructProductsList(ResultSet resultSet) throws SQLException {
@@ -36,7 +39,6 @@ public class DatabaseService {
         }
         return products;
     }
-
 
     public void CreateManufacturerTable() {
         String sql = "CREATE TABLE IF NOT EXISTS manufacturers " +
@@ -155,7 +157,7 @@ public class DatabaseService {
 
             dbConnection.createStatement().executeUpdate(DELETE_PRODUCTS_WHERE_ID, id);
 
-            System.out.println("Product deleted with id =" +id);
+            System.out.println("Product deleted with id =" + id);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -172,11 +174,54 @@ public class DatabaseService {
         }
     }
 
+    // - deleteManufacturer (note: istrinant gamintoja reiktu istrinti ir jam priklausancius produktus).
+    public void deleteManufacturerIncludedRelatedProducts(String manufacture) {
+        Statement statement;
+        try {
+            dbConnection.createStatement().executeUpdate(String.format(DELETE_MANUFACTURE_WITH_PRODUCTS_WHERE_MANUFACTURE, manufacture));
+            System.out.println("Manufacturer deleted including products, Manufacture name: " + manufacture);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // - drop Tables
+    public void dropTables() {
+        Statement statement;
+        try {
+            dbConnection.createStatement().executeUpdate(String.format("DROP TABLE products"));
+            dbConnection.createStatement().executeUpdate(String.format("DROP TABLE manufacturers"));
+            System.out.println("SQL clean up");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // - update Product
+    public void updateProductsById(String name, String country, Integer price, String manufacturer, Integer id) {
+        Statement statement;
+        try {
+            dbConnection.createStatement().executeUpdate(String.format(UPDATE_PRODUCTS_WHERE_ID_D, name, country, price, manufacturer, id));
+            System.out.println("Product with id = " + id + " been updated");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // - update Manufacturer
+    public void updateManufacturerById(String name, String countryManufacture, Integer numberOfEmploees,  Integer id) {
+        Statement statement;
+        try {
+            dbConnection.createStatement().executeUpdate(String.format(UPDATE_MANUFACTURER_ID, name, countryManufacture,numberOfEmploees, id));
+            System.out.println("Manufacture with id = " + id + " been updated");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
 
 
-// - deleteManufacturer (note: istrinant gamintoja reiktu istrinti ir jam priklausancius produktus).
-// - update
 
 
 

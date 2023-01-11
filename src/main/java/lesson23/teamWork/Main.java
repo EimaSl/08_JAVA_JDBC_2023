@@ -1,6 +1,5 @@
 package lesson23.teamWork;
 
-import lesson23.teamWork.entity.Product;
 import lesson23.teamWork.repository.DatabaseService;
 
 import java.io.IOException;
@@ -13,13 +12,16 @@ public class Main {
         // System.out.println(products);
         DatabaseService databaseService = new DatabaseService();
 
+        //dropExistingTables
+        databaseService.dropTables();
+
         //create table
         databaseService.CreateManufacturerTable();
         databaseService.CreateProductsTable();
 
 
-       //databaseService.insertIntoManufacturerTable();
-        //databaseService.insertIntoProductTable();
+        databaseService.insertIntoManufacturerTable();
+        databaseService.insertIntoProductTable();
 
         System.out.println("Find all products");
         System.out.println("\t" + databaseService.findAllProducts());
@@ -30,6 +32,10 @@ public class Main {
         System.out.println("Deleting .........");
         databaseService.deleteProduct(3);
         databaseService.deleteByManufacturer("Volfas");
+
+        databaseService.deleteManufacturerIncludedRelatedProducts("Fasma");
+        databaseService.updateProductsById("FunToChange", "Galaxy", 1, "Else", 6);
+        databaseService.updateManufacturerById("KodoKelias", "Lithuania", 16, 6);
 
     }
 
