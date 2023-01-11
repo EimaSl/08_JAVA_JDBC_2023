@@ -1,0 +1,50 @@
+[
+  {
+    "name_product": "Bread",
+    "price_product": 15,
+    "country_product": "Lithuania",
+    "manufacturer": "Fasma",
+    "manufacturer_emp_count": 20,
+    "manufacturer_address": "Liepu g. 15"
+  },
+  {
+    "name_product": "Milk",
+    "price_product": 12,
+    "country_product": "Poland",
+    "manufacturer": "Biedronka",
+    "manufacturer_emp_count": 35,
+    "manufacturer_address": "Fire st. 24"
+  },
+  {
+    "name_product": "Coffee",
+    "price_product": 35,
+    "country_product": "Columbia",
+    "manufacturer": "Senor Coffee",
+    "manufacturer_emp_count": 525,
+    "manufacturer_address": "Cuba st. 11"
+  },
+  {
+    "name_product": "Sweets",
+    "price_product": 5,
+    "country_product": "Germany",
+    "manufacturer": "SweetCo",
+    "manufacturer_emp_count": 44,
+    "manufacturer_address": "Schumacher st. 98"
+  },
+  {
+    "name_product": "Beer",
+    "price_product": 3,
+    "country_product": "Belgium",
+    "manufacturer": "Volfas",
+    "manufacturer_emp_count": 100,
+    "manufacturer_address": "Kaizen st. 108"
+  },
+  {
+    "name_product": "Sausage",
+    "price_product": 13,
+    "country_product": "Latvia",
+    "manufacturer": "SkaniosDesros.lt",
+    "manufacturer_emp_count": 12,
+    "manufacturer_address": "Janis ila  148"
+  }
+]

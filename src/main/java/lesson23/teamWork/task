@@ -1,0 +1,24 @@
+
+ + Prideti ranka 2-3 papildomus irasus I duota json faila.
+
+ + Nuskaityti duomenis is json failo.
+ + Prideti logikos (javos puseje), kuri sukurti atitinkamas dvi lenteles ir
+   I jas sudetu nuskaitytus duomenis taip, kad aiskiai matytusi tiekeju ir produktu info, bei sarysis (one to one) tarp ju.
+
+ + Prideti bazini funkcionaluma is javos puses, kuris leistu prideti duomenis, surasti duomenis (taip reikes joinu),
+   kaip pvz.:
+    findAllProducts,
+    findProductsByName,
+  + findAllProductsByGivenManufacturer,
+
+ + deleteProduct,
+ - deleteManufacturer (note: istrinant gamintoja reiktu istrinti ir jam priklausancius produktus).
+ - update
+
+
+ TIP: Funkcionalumas turetu buti isskaidytas
+    - ProductRepository
+    - ManufacturerRepository, o biznio logika (jei tokia bus) I service klases.
+
+Bonus:
+    pridedant irasa I duomenu baze, reiktu, kad tas irasas prisidetu ir I json faila :)
