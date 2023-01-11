@@ -36,6 +36,7 @@ public class Main {
         databaseService.deleteManufacturerIncludedRelatedProducts("Fasma");
         databaseService.updateProductsById("FunToChange", "Galaxy", 1, "Else", 6);
         databaseService.updateManufacturerById("KodoKelias", "Lithuania", 16, 6);
+        databaseService.writeNewJsonFile();
 
     }
 

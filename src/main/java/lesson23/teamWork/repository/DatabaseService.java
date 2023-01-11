@@ -1,8 +1,12 @@
 package lesson23.teamWork.repository;
 
+import com.google.gson.Gson;
 import lesson23.teamWork.entity.Product;
 import lesson23.teamWork.service.JsonReader;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,6 +29,7 @@ public class DatabaseService {
             " where products.manufacturer = '%s'";
     public static final String UPDATE_PRODUCTS_WHERE_ID_D = "UPDATE products SET name = '%s', country = '%s', price= %d, manufacturer = '%s' where id= %d";
     public static final String UPDATE_MANUFACTURER_ID = "UPDATE manufacturers SET name ='%s', countryManufacturer = '%s', numberOfEmployees = %d where id=%d;";
+    public static final String RETRIVE_ALL_DATA_FOR_DB = "select country,price,manufacturer,numberOfEmployees,manufacturerAddress  from products as a inner join manufacturers as b on a.id=b.id;";
 
 
     private static List<Product> constructProductsList(ResultSet resultSet) throws SQLException {
@@ -209,15 +214,74 @@ public class DatabaseService {
     }
 
     // - update Manufacturer
-    public void updateManufacturerById(String name, String countryManufacture, Integer numberOfEmploees,  Integer id) {
+    public void updateManufacturerById(String name, String countryManufacture, Integer numberOfEmploees, Integer id) {
         Statement statement;
         try {
-            dbConnection.createStatement().executeUpdate(String.format(UPDATE_MANUFACTURER_ID, name, countryManufacture,numberOfEmploees, id));
+            dbConnection.createStatement().executeUpdate(String.format(UPDATE_MANUFACTURER_ID, name, countryManufacture, numberOfEmploees, id));
             System.out.println("Manufacture with id = " + id + " been updated");
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
+    // - create newJsonFileFromSql
+    public ResultSet RetrieveData() throws SQLException {
+        Statement statement;
+        ResultSet rs = dbConnection.createStatement().executeQuery(RETRIVE_ALL_DATA_FOR_DB);
+        return rs;
+    }
+
+    public void writeNewJsonFile() throws SQLException {
+
+        ResultSet resultSet = RetrieveData();
+        List<Product> list = new ArrayList<>();
+        while (resultSet.next()){
+            Product product = new Product();
+            //product.setId(resultSet.getInt("id"));
+            //product.setName_product(resultSet.getString("name"));
+            product.setPrice_product(resultSet.getInt("price"));
+            product.setCountry_product(resultSet.getString("country"));
+            product.setManufacturer(resultSet.getString("manufacturer"));
+            product.setManufacturer_emp_count(resultSet.getInt("numberOfEmployees"));
+            product.setManufacturer_address(resultSet.getString("manufacturerAddress"));
+            list.add(product);
+        }
+
+
+            String json = new Gson().toJson(list);
+            try {
+                FileWriter file = new FileWriter("src/main/resources/output.json");
+                file.write(json);
+                file.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            System.out.println("JSON file created");
+
+
+
+
+
+    }
+
+//        JSONObject jsonObject = new JSONObject();
+//        JSONArray array = new JSONArray();
+//        ResultSet rs = RetrieveData();
+//
+//        while(rs.next()) {
+//            JSONObject record = new JSONObject();
+//            //Inserting key-value pairs into the json object
+//            record.put("ID", rs.getInt("ID"));
+//            record.put("First_Name", rs.getString("First_Name"));
+//            record.put("Last_Name", rs.getString("Last_Name"));
+//            record.put("Date_Of_Birth", rs.getDate("Date_Of_Birth"));
+//            record.put("Place_Of_Birth", rs.getString("Place_Of_Birth"));
+//            record.put("Country", rs.getString("Country"));
+//            array.add(record);
+//            //https://www.tutorialspoint.com/how-to-read-retrieve-data-from-database-to-json-using-jdbc
+//        }
+
+//    }
 
 }
 
