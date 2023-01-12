@@ -2,12 +2,14 @@ package lesson23.teamWork.repository;
 
 import com.google.gson.Gson;
 import lesson23.teamWork.entity.Product;
-import lesson23.teamWork.service.JsonReader;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
+import lesson23.teamWork.service.GeneratePDF;
+import lesson23.teamWork.service.JsonReader;
+
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -29,7 +31,7 @@ public class DatabaseService {
             " where products.manufacturer = '%s'";
     public static final String UPDATE_PRODUCTS_WHERE_ID_D = "UPDATE products SET name = '%s', country = '%s', price= %d, manufacturer = '%s' where id= %d";
     public static final String UPDATE_MANUFACTURER_ID = "UPDATE manufacturers SET name ='%s', countryManufacturer = '%s', numberOfEmployees = %d where id=%d;";
-    public static final String RETRIVE_ALL_DATA_FOR_DB = "select country,price,manufacturer,numberOfEmployees,manufacturerAddress  from products as a inner join manufacturers as b on a.id=b.id;";
+    public static final String RETRIVE_ALL_DATA_FOR_DB = "select a.name,price,country,manufacturer,numberOfEmployees,manufacturerAddress from products as a inner join manufacturers as b on a.id=b.id;";
 
 
     private static List<Product> constructProductsList(ResultSet resultSet) throws SQLException {
@@ -231,57 +233,43 @@ public class DatabaseService {
         return rs;
     }
 
-    public void writeNewJsonFile() throws SQLException {
+    public List<Product> writeNewJsonFile() throws SQLException {
 
         ResultSet resultSet = RetrieveData();
         List<Product> list = new ArrayList<>();
-        while (resultSet.next()){
-            Product product = new Product();
-            //product.setId(resultSet.getInt("id"));
-            //product.setName_product(resultSet.getString("name"));
-            product.setPrice_product(resultSet.getInt("price"));
-            product.setCountry_product(resultSet.getString("country"));
-            product.setManufacturer(resultSet.getString("manufacturer"));
-            product.setManufacturer_emp_count(resultSet.getInt("numberOfEmployees"));
-            product.setManufacturer_address(resultSet.getString("manufacturerAddress"));
-            list.add(product);
+        while (resultSet.next()) {
+
+            Product product1 = new Product();
+
+            product1.setName_product(resultSet.getString("name"));
+            product1.setPrice_product(resultSet.getInt("price"));
+            product1.setCountry_product(resultSet.getString("country"));
+            product1.setManufacturer(resultSet.getString("manufacturer"));
+            product1.setManufacturer_emp_count(resultSet.getInt("numberOfEmployees"));
+            product1.setManufacturer_address(resultSet.getString("manufacturerAddress"));
+            list.add(product1);
         }
 
 
-            String json = new Gson().toJson(list);
-            try {
-                FileWriter file = new FileWriter("src/main/resources/output.json");
-                file.write(json);
-                file.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            System.out.println("JSON file created");
+        String json = new Gson().toJson(list);
+        try {
+            FileWriter file = new FileWriter("src/main/resources/output.json");
+            file.write(json);
+            file.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-
-
-
-
+        return list;
     }
 
-//        JSONObject jsonObject = new JSONObject();
-//        JSONArray array = new JSONArray();
-//        ResultSet rs = RetrieveData();
-//
-//        while(rs.next()) {
-//            JSONObject record = new JSONObject();
-//            //Inserting key-value pairs into the json object
-//            record.put("ID", rs.getInt("ID"));
-//            record.put("First_Name", rs.getString("First_Name"));
-//            record.put("Last_Name", rs.getString("Last_Name"));
-//            record.put("Date_Of_Birth", rs.getDate("Date_Of_Birth"));
-//            record.put("Place_Of_Birth", rs.getString("Place_Of_Birth"));
-//            record.put("Country", rs.getString("Country"));
-//            array.add(record);
-//            //https://www.tutorialspoint.com/how-to-read-retrieve-data-from-database-to-json-using-jdbc
-//        }
+    public void createNewPdf() throws MalformedURLException, SQLException, FileNotFoundException {
+        GeneratePDF generatePDF = new GeneratePDF();
+        generatePDF.CreateMPdf();
+    }
 
-//    }
+
+
 
 }
 

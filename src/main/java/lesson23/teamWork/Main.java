@@ -38,6 +38,8 @@ public class Main {
         databaseService.updateManufacturerById("KodoKelias", "Lithuania", 16, 6);
         databaseService.writeNewJsonFile();
 
+        databaseService.createNewPdf();
+
     }
 
 
